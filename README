@@ -1,0 +1,10 @@
+This is a bot script for Discord. Create by Simon Murphy.
+
+Gems used
+gem 'mtg_sdk'
+gem 'discordrb'
+
+Usage from Discord:
+[[card_name]] Will display the namded card in Discord.
+~README~ Posts the README to the Discord chat.
+~exit~ Will kill the ruby script running the Bot. Not case sensitive.
