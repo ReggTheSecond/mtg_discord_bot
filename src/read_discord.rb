@@ -28,6 +28,9 @@ end
 
 bot.message(with_text: /\[\[(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
     case event.content.to_s()
+    when /\/\//
+      card_name = event.content.to_s()
+      event.respond get_split_card(clean_name(card_name))
     when /\[\[(.+):sets\]\]/
       card_name = event.content.to_s()
       event.respond get_card_sets(clean_name(card_name))

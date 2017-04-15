@@ -29,14 +29,26 @@ def get_nickname(card_name)
   file.close()
 end
 
+def get_split_card(card_name)
+  if is_a_nickname(card_name)
+    card_name = get_nickname(card_name)
+  end
+  left = card_name.split("//").first()
+  right = card_name.split("//").last()
+  left_cards = get_cards(left)
+  left_cards.each() do |left_card|
+    if left_card.name.downcase().strip() == left
+      return left_card.image_url
+    end
+  end
+end
+
 def get_card_link(card_name)
   if is_a_nickname(card_name)
     card_name = get_nickname(card_name)
   end
   cards = get_cards(card_name)
-  if !card_name.include?(":sets")
-    return cards.last().image_url
-  end
+  return cards.last().image_url
 end
 
 def get_specific_set(card_name, set)
