@@ -8,6 +8,8 @@ class Commands
       post_readme(event)
     elsif command.match /^nickname:(.+)>>(.+):$/
       create_card_nickname(event, command)
+    elsif command.match /^remove nickname:(.+)>>(.+):$/
+      remove_card_nickname(event, command)
     elsif command == "list nicknames"
       list_nicknames(event)
     else
@@ -44,6 +46,21 @@ class Commands
     nickname_file << "#{card_name}~#{nickname}\n"
     nickname_file.close()
     event.respond "Nickname created for #{card_name}, nickname is #{nickname}"
+  end
+
+  def remove_card_nickname(event,names)
+    card_name = names.split(">>").first().split(":").last()
+    nickname = names.split(">>").last().split(":").first()
+    nickname_file = File.open("data/nicknames.csv", 'a+')
+    puts names
+    new_file = ""
+    nickname_file.each_line() do |line|
+      if line.strip != "#{card_name}~#{nickname}"
+        new_file = new_file << line
+      end
+    end
+    nickname_file.close()
+    event.respond "Nickname removed for #{card_name}, nickname is #{nickname}"
   end
 
   def list_nicknames(event)
