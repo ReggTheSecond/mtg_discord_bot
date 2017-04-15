@@ -8,6 +8,7 @@ Usage from Discord:
 [[card_name]] Will display the namded card in Discord chat.
 "I'm a [[Raging Goblin]], who are you? Will display a single card in Discord chat." Currently only supports a single card name in a message.
 ~nickname:Dark Confidant>>Bob:~ Creates a nickname for the card. Saves to the data directory. And afterward you can use the card name function to display using the nickname
+~remove nickname:Dark Confidant>>Bob:~ Removes a nickname for the card. Removes to the data directory.
 ~list nicknames~ Lists all nicknames for Magic Cards
 ~README~ Posts the README to the Discord chat.
 ~exit~ Will kill the ruby script running the Bot. Not case sensitive.
