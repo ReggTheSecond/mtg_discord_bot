@@ -6,7 +6,8 @@ def clean_card_name(card_name)
   card_name = card_name.strip()
   card_name = card_name.split("[[").last()
   card_name = card_name.split("]]").first()
-  card_name = card_name.split(":").first()  
+  card_name = card_name.split(":").first()
+  card_name = card_name.downcase()
   return card_name
 end
 
@@ -23,12 +24,12 @@ end
 
 bot.message(with_text: /\[\[(.+):sets\]\]/) do |event|
   card_name = event.content.to_s()
-  event.respond get_card_set(clean_card_name(card_name))
+  event.respond "#{clean_card_name(card_name)}\n#{get_card_set(clean_card_name(card_name))}"
 end
 
 bot.message(with_text: /\[\[(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
   card_name = event.content.to_s()
-  event.respond "#{clean_card_name(card_name)}\n#{get_card_link(clean_card_name(card_name))}"
+  event.respond "#{get_card_link(clean_card_name(card_name))}"
 end
 
 bot.run

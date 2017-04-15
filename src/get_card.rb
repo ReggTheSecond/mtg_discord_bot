@@ -40,6 +40,9 @@ def get_card_link(card_name)
 end
 
 def get_card_set(card_name)
+  if is_a_nickname(card_name)
+    card_name = get_nickname(card_name)
+  end
   cards = get_card(card_name)
   sets = ""
   cards.each do |card|
