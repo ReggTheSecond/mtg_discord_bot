@@ -6,6 +6,10 @@ class Commands
       shut_down_bot(event)
     elsif command == "readme"
       post_readme(event)
+    elsif command.match /^nickname:(.+)>>(.+):$/
+      create_card_nickname(event, command)
+    else
+      unknown_command(event)
     end
   end
 
@@ -27,6 +31,19 @@ class Commands
     file.each_line do |line|
       readme = readme << line
     end
+    file.close()
     event.respond readme
+  end
+
+  def create_card_nickname(event, names)
+    card_name = names.split(">>").first().split(":").last()
+    nickname = names.split(">>").last().split(":").first()
+    nickname_file = File.open("data/nicknames.csv", 'w+')
+    nickname_file << "#{card_name}~#{nickname}"
+    nickname_file.close()
+  end
+
+  def unknown_command(event)
+    event.respond "This command is unknown. Please see the README for command list with: ~README~"
   end
 end
