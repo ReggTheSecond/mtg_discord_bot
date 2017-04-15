@@ -2,13 +2,17 @@ require 'discordrb'
 require_relative 'get_card.rb'
 require_relative 'commands.rb'
 
-def clean_card_name(card_name)
+def clean_name(card_name)
   card_name = card_name.strip()
   card_name = card_name.split("[[").last()
   card_name = card_name.split("]]").first()
   card_name = card_name.split(":").first()
   card_name = card_name.downcase()
   return card_name
+end
+
+def get_set(card_name)
+  return card_name.split(":").last().downcase()
 end
 
 command_centre = Commands.new()
@@ -22,14 +26,19 @@ bot.message(with_text: /~(.+)~/) do |event|
   command_centre.filter_commands(event)
 end
 
-bot.message(with_text: /\[\[(.+):sets\]\]/) do |event|
-  card_name = event.content.to_s()
-  event.respond "#{clean_card_name(card_name)}\n#{get_card_set(clean_card_name(card_name))}"
-end
-
 bot.message(with_text: /\[\[(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
-  card_name = event.content.to_s()
-  event.respond "#{get_card_link(clean_card_name(card_name))}"
+    case event.content.to_s()
+    when /\[\[(.+):sets\]\]/
+      card_name = event.content.to_s()
+      event.respond get_card_sets(clean_name(card_name))
+    when /\[\[(.+):(...)\]\]/
+      card_name = event.content.to_s()
+      set = get_set(card_name)
+      event.respond get_specific_set(clean_name(card_name), clean_name(set))
+    else
+      card_name = event.content.to_s()
+      event.respond get_card_link(clean_name(card_name))
+    end
 end
 
 bot.run

@@ -8,6 +8,8 @@ class Commands
       post_readme(event)
     elsif command.match /^nickname:(.+)>>(.+):$/
       create_card_nickname(event, command)
+    elsif command == "list nicknames"
+      list_nicknames(event)
     else
       unknown_command(event)
     end
@@ -38,9 +40,19 @@ class Commands
   def create_card_nickname(event, names)
     card_name = names.split(">>").first().split(":").last()
     nickname = names.split(">>").last().split(":").first()
-    nickname_file = File.open("data/nicknames.csv", 'w+')
-    nickname_file << "#{card_name}~#{nickname}"
+    nickname_file = File.open("data/nicknames.csv", 'a+')
+    nickname_file << "#{card_name}~#{nickname}\n"
     nickname_file.close()
+    event.respond "Nickname created for #{card_name}, nickname is #{nickname}"
+  end
+
+  def list_nicknames(event)
+    nickname_file = File.open("data/nicknames.csv", 'r+')
+    nicknames = ""
+    nickname_file.each_line do |line|
+      nicknames = nicknames << line
+    end
+    event.respond "Nickames:\n#{nicknames}"
   end
 
   def unknown_command(event)
