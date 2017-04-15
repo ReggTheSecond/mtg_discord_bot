@@ -5,6 +5,7 @@ gem 'mtg_sdk'
 gem 'discordrb'
 
 Usage from Discord:
-[[card_name]] Will display the namded card in Discord.
+[[card_name]] Will display the namded card in Discord chat.
+I'm a [[Raging Goblin]], who are you? Will display a single card in Discord chat. Currently only supports a single card name in a message.
 ~README~ Posts the README to the Discord chat.
 ~exit~ Will kill the ruby script running the Bot. Not case sensitive.

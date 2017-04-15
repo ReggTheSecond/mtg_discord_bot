@@ -1,5 +1,4 @@
 class Commands
-
   def filter_commands(event)
     command = event.content.to_s()
     command = clean_command(command)
