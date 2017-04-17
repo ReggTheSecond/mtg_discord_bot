@@ -3,7 +3,7 @@ class SearchGatherer
     results = cards_with(name, type, subtype, text, colour)
     results.each_line do |line|
       sleep 1
-      event.respond get_card_link(line)
+      event.send_temp(get_card_link(line), 60)
     end
   end
 

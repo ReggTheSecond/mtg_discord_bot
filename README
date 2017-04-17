@@ -19,3 +19,13 @@ Usage from Discord:
 ~list nicknames~ Lists all nicknames for Magic Cards
 ~README~ Posts the README to the Discord chat.
 ~exit~ Will kill the ruby script running the Bot. Not case sensitive.
+
+Seaching Gatherer:
+To search gatherer encase the query in double {}
+Parts of the card you can search by:
+Name - {{name:Nicol}}
+Type - {{type:instant}}
+Subtype  - {sub:Goblin}
+Text - {{text:enters the battlefield}}
+One colour - {{colour:white}}
+More than on colour - {{colour:white,blue}}
