@@ -1,12 +1,25 @@
 require 'discordrb'
 require_relative 'get_card.rb'
 require_relative 'commands.rb'
+require_relative 'searching_gatherer.rb'
 
 def clean_name(card_name)
   card_name = card_name.strip()
   card_name = card_name.split("[[").last()
   card_name = card_name.split("]]").first()
+  card_name = card_name.split("{{").last()
+  card_name = card_name.split("}}").first()
   card_name = card_name.split(":").first()
+  card_name = card_name.downcase()
+  return card_name
+end
+
+def clean_text(card_name)
+  card_name = card_name.strip()
+  card_name = card_name.split("[[").last()
+  card_name = card_name.split("]]").first()
+  card_name = card_name.split("{{").last()
+  card_name = card_name.split("}}").first()
   card_name = card_name.downcase()
   return card_name
 end
@@ -16,6 +29,7 @@ def get_set(card_name)
 end
 
 command_centre = Commands.new()
+search = SearchGatherer.new()
 
 token = ARGV[0]
 client_id = ARGV[2]
@@ -26,7 +40,7 @@ bot.message(with_text: /~(.+)~/) do |event|
   command_centre.filter_commands(event)
 end
 
-bot.message(with_text: /\[\[(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
+bot.message(with_text: /(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
     case event.content.to_s()
     when /\/\//
       card_name = event.content.to_s()
@@ -42,6 +56,10 @@ bot.message(with_text: /\[\[(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
       card_name = event.content.to_s()
       event.respond get_card_link(clean_name(card_name))
     end
+end
+
+bot.message(with_text: /\{\{(.+)\}\}/) do |event|
+  search.parse_search(event)
 end
 
 bot.run

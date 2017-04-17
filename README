@@ -4,6 +4,12 @@ Gems used
 gem 'mtg_sdk'
 gem 'discordrb'
 
+Requires:
+Bundler
+Ruby
+
+Before use run: bundle
+
 Usage from Discord:
 [[card_name]] Will display the namded card in Discord chat.
 "I'm a [[Raging Goblin]], who are you? Will display a single card in Discord chat." Currently only supports a single card name in a message.

@@ -47,7 +47,13 @@ def get_card_link(card_name)
   if is_a_nickname(card_name)
     card_name = get_nickname(card_name)
   end
+
   cards = get_cards(card_name)
+  cards.each do |card|
+    if card.name.downcase.strip == card_name
+      return card.image_url
+    end
+  end
   return cards.last().image_url
 end
 
@@ -68,4 +74,19 @@ def get_card_sets(card_name)
     sets = sets << card.set() << "\n"
   end
   return sets
+end
+
+def cards_with(search_for_name, search_for_text, search_for_colour)
+  results = ""
+  cards =  MTG::Card.where(name: search_for_name)
+                    .where(text: search_for_text)
+                    .where(colors: search_for_colour)
+                    .where(page: 1).where(pageSize: 20)
+                    .all
+  cards.each() do |card|
+    if !results.include?(card.name)
+      results = results << "#{card.name}\n"
+    end
+  end
+  return results
 end
