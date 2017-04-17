@@ -1,3 +1,5 @@
+require_relative 'whats_the_pick.rb'
+
 class Commands
   def filter_commands(event)
     command = event.content.to_s()
@@ -12,6 +14,8 @@ class Commands
       remove_card_nickname(event, command)
     elsif command == "list nicknames"
       list_nicknames(event)
+    elsif command.match /^whatsthepick:...:$/
+      WhatIsThePick.new(event, command.split(":").last().split(":").first())
     else
       unknown_command(event)
     end
