@@ -3,17 +3,6 @@ require_relative 'get_card.rb'
 require_relative 'commands.rb'
 require_relative 'searching_gatherer.rb'
 
-def clean_name(card_name)
-  card_name = card_name.strip()
-  card_name = card_name.split("[[").last()
-  card_name = card_name.split("]]").first()
-  card_name = card_name.split("{{").last()
-  card_name = card_name.split("}}").first()
-  card_name = card_name.split(":").first()
-  card_name = card_name.downcase()
-  return card_name
-end
-
 def clean_text(card_name)
   card_name = card_name.strip()
   card_name = card_name.split("[[").last()
@@ -44,17 +33,17 @@ bot.message(with_text: /(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
     case event.content.to_s()
     when /\/\//
       card_name = event.content.to_s()
-      event.respond get_split_card(clean_name(card_name))
+      event.respond get_split_card(card_name)
     when /\[\[(.+):sets\]\]/
       card_name = event.content.to_s()
-      event.respond get_card_sets(clean_name(card_name))
+      event.respond get_card_sets(card_name)
     when /\[\[(.+):(...)\]\]/
       card_name = event.content.to_s()
       set = get_set(card_name)
-      event.respond get_specific_set(clean_name(card_name), clean_name(set))
+      event.respond get_specific_set(card_name, set)
     else
       card_name = event.content.to_s()
-      event.respond get_card_link(clean_name(card_name))
+      event.respond get_card_link(card_name)
     end
 end
 

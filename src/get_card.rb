@@ -1,11 +1,22 @@
 require 'mtg_sdk'
 
 def get_cards(card_name)
-  cards =  MTG::Card.where(name: card_name).all
+  cards = MTG::Card.where(name: card_name).all
 end
 
 def get_nickname_file()
   return File.open("data/nicknames.csv", 'r')
+end
+
+def clean_name(card_name)
+  card_name = card_name.strip()
+  card_name = card_name.split("[[").last()
+  card_name = card_name.split("]]").first()
+  card_name = card_name.split("{{").last()
+  card_name = card_name.split("}}").first()
+  card_name = card_name.split(":").first()
+  card_name = card_name.downcase()
+  return card_name
 end
 
 def is_a_nickname(card_name)
@@ -30,6 +41,7 @@ def get_nickname(card_name)
 end
 
 def get_split_card(card_name)
+  card_name = clean_name(card_name)
   if is_a_nickname(card_name)
     card_name = get_nickname(card_name)
   end
@@ -44,20 +56,25 @@ def get_split_card(card_name)
 end
 
 def get_card_link(card_name)
+  card_name = clean_name(card_name)
   if is_a_nickname(card_name)
     card_name = get_nickname(card_name)
   end
 
   cards = get_cards(card_name)
   cards.each do |card|
-    if card.name.downcase.strip == card_name
-      return card.image_url
+    if card.name.downcase().strip() == card_name
+      if card.image_url != nil && card.image_url != ""
+        return card.image_url
+      end
     end
   end
   return cards.last().image_url
 end
 
 def get_specific_set(card_name, set)
+  card_name = clean_name(card_name)
+  set = clean_name(set)
   cards =  MTG::Card.where(name: card_name)
                     .where(set: set)
                     .all
@@ -76,11 +93,13 @@ def get_card_sets(card_name)
   return sets
 end
 
-def cards_with(search_for_name, search_for_text, search_for_colour)
+def cards_with(name, type, subtype, text, colour)
   results = ""
-  cards =  MTG::Card.where(name: search_for_name)
-                    .where(text: search_for_text)
-                    .where(colors: search_for_colour)
+  cards =  MTG::Card.where(name: name)
+                    .where(type: type)
+                    .where(subtypes: subtype)
+                    .where(text: text)
+                    .where(colors: colour)
                     .where(page: 1).where(pageSize: 20)
                     .all
   cards.each() do |card|
