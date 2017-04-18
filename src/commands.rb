@@ -4,21 +4,25 @@ class Commands
   def filter_commands(event)
     command = event.content.to_s()
     command = clean_command(command)
+    request = ""
     if command == "exit"
       shut_down_bot(event)
     elsif command == "readme"
-      post_readme(event)
+      result = post_readme(event)
     elsif command.match /^nickname:(.+)>>(.+):$/
-      create_card_nickname(event, command)
+      result = create_card_nickname(event, command)
     elsif command.match /^remove nickname:(.+)>>(.+):$/
-      remove_card_nickname(event, command)
+      result = remove_card_nickname(event, command)
     elsif command == "list nicknames"
-      list_nicknames(event)
+      result = list_nicknames(event)
     elsif command.match /^whatsthepick:...:$/
       WhatIsThePick.new(event, command.split(":").last().split(":").first())
+    elsif command.math ~request:(.+):~
+      result = feature_requests(command)
     else
-      unknown_command(event)
+      result = unknown_command(event)
     end
+    event.respond result
   end
 
   def clean_command(command)
@@ -40,7 +44,7 @@ class Commands
       readme = readme << line
     end
     file.close()
-    event.respond readme
+    return readme
   end
 
   def create_card_nickname(event, names)
@@ -49,7 +53,7 @@ class Commands
     nickname_file = File.open("data/nicknames.csv", 'a+')
     nickname_file << "#{card_name}~#{nickname}\n"
     nickname_file.close()
-    event.respond "Nickname created for #{card_name}, nickname is #{nickname}"
+    return "Nickname created for #{card_name}, nickname is #{nickname}"
   end
 
   def remove_card_nickname(event,names)
@@ -64,7 +68,7 @@ class Commands
       end
     end
     nickname_file.close()
-    event.respond "Nickname removed for #{card_name}, nickname is #{nickname}"
+    return "Nickname removed for #{card_name}, nickname is #{nickname}"
   end
 
   def list_nicknames(event)
@@ -73,7 +77,15 @@ class Commands
     nickname_file.each_line do |line|
       nicknames = nicknames << line
     end
-    event.respond "Nickames:\n#{nicknames}"
+    return "Nickames:\n#{nicknames}"
+  end
+
+  def add_feature_request(command)
+    file = File.open("data/feature_requests.txt", "a+")
+    request = "#{DateTime.now().strftime("%d/%m/%y")}:Feature: #{command.split(":").last().split(":").first()}"
+    file << request
+    file.close()
+    return request
   end
 
   def unknown_command(event)
