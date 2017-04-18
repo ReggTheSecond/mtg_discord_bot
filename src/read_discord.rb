@@ -1,7 +1,7 @@
 require 'discordrb'
-require_relative 'get_card.rb'
-require_relative 'commands.rb'
-require_relative 'searching_gatherer.rb'
+require_relative '~/workspace/discord_magic_bot/src/get_card.rb'
+require_relative '~/workspace/discord_magic_bot/src/commands.rb'
+require_relative '~/workspace/discord_magic_bot/src/searching_gatherer.rb'
 
 def clean_text(card_name)
   card_name = card_name.strip()
@@ -34,7 +34,7 @@ bot.message(with_text: /(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
     when /\/\//
       card_name = event.content.to_s()
       event.respond get_split_card(card_name)
-    when /\[\[(.+):sets\]\]/
+    when /\[\[(.+):sets:\]\]/
       card_name = event.content.to_s()
       event.respond get_card_sets(card_name)
     when /\[\[(.+):(...)\]\]/
