@@ -25,6 +25,10 @@ client_id = ARGV[2]
 
 bot = Discordrb::Bot.new token: token, client_id: client_id
 
+bot.message(with_text: /\[\[|\{\{|~/) do |event|
+  puts event.content.to_s()
+end
+
 bot.message(with_text: /~(.+)~/) do |event|
   command_centre.filter_commands(event)
 end

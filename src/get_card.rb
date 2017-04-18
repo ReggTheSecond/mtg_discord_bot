@@ -82,6 +82,8 @@ def get_specific_set(card_name, set)
 end
 
 def get_card_sets(card_name)
+  card_name = clean_name(card_name)
+  card_name = card_name.split(":").first()
   if is_a_nickname(card_name)
     card_name = get_nickname(card_name)
   end
