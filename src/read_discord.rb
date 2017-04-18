@@ -1,7 +1,7 @@
 require 'discordrb'
-require_relative '~/workspace/discord_magic_bot/src/get_card.rb'
-require_relative '~/workspace/discord_magic_bot/src/commands.rb'
-require_relative '~/workspace/discord_magic_bot/src/searching_gatherer.rb'
+require_relative 'get_card.rb'
+require_relative 'commands.rb'
+require_relative 'searching_gatherer.rb'
 
 def clean_text(card_name)
   card_name = card_name.strip()
