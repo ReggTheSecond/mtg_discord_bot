@@ -17,7 +17,7 @@ class Commands
       result = list_nicknames(event)
     elsif command.match /^whatsthepick:...:$/
       WhatIsThePick.new(event, command.split(":").last().split(":").first())
-    elsif command.match ~request:(.+):~
+    elsif command.match /~request:(.+):~/
       result = feature_requests(command)
     else
       result = unknown_command(event)
