@@ -33,7 +33,7 @@ bot.message(with_text: /~(.+)~/) do |event|
   command_centre.filter_commands(event)
 end
 
-bot.message(with_text: /(.+)\]\]|(.+)\[\[(.+)\]\](.+)/) do |event|
+bot.message(with_text: /(.+)\[\[(.+)\]\](.+)/) do |event|
     case event.content.to_s()
     when /\/\//
       card_name = event.content.to_s()
