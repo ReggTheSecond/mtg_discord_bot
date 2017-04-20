@@ -10,14 +10,14 @@ class Commands
     elsif command == "readme"
       result = post_readme(event)
     elsif command.match /^nickname:(.+)>>(.+):$/
-      result = create_card_nickname(event, command)
+      result = create_card_nickname(command)
     elsif command.match /^remove nickname:(.+)>>(.+):$/
-      result = remove_card_nickname(event, command)
+      result = remove_card_nickname(command)
     elsif command == "list nicknames"
       result = list_nicknames(event)
     elsif command.match /^whatsthepick:...:$/
       WhatIsThePick.new(event, command.split(":").last().split(":").first())
-    elsif command.match /~request:(.+):~/
+    elsif command.match /^request:(.+):$/
       result = feature_requests(command)
     else
       result = unknown_command(event)
@@ -47,7 +47,7 @@ class Commands
     return readme
   end
 
-  def create_card_nickname(event, names)
+  def create_card_nickname(names)
     card_name = names.split(">>").first().split(":").last()
     nickname = names.split(">>").last().split(":").first()
     nickname_file = File.open("data/nicknames.csv", 'a+')
@@ -56,7 +56,7 @@ class Commands
     return "Nickname created for #{card_name}, nickname is #{nickname}"
   end
 
-  def remove_card_nickname(event,names)
+  def remove_card_nickname(names)
     card_name = names.split(">>").first().split(":").last()
     nickname = names.split(">>").last().split(":").first()
     nickname_file = File.open("data/nicknames.csv", 'a+')
