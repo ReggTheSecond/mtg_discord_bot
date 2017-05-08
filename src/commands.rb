@@ -94,7 +94,3 @@ class Commands
     event.respond "This command is unknown. Please see the README for command list with: ~README~"
   end
 end
-
-thing = Commands.new()
-
-thing.remove_card_nickname("~remove nickname:dig through time>>dig:~")
