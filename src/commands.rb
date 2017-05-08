@@ -57,8 +57,8 @@ class Commands
   end
 
   def remove_card_nickname(names)
-    card_name = names.split(">>").first().split(":").last()
-    nickname = names.split(">>").last().split(":").first()
+    card_name = names.split(">>").first().split(":").last().strip()
+    nickname = names.split(">>").last().split(":").first().strip()
     nickname_file = File.open("data/nicknames.csv", 'a+')
     puts names
     new_file = ""
@@ -67,6 +67,8 @@ class Commands
         new_file = new_file << line
       end
     end
+    nickname_file.truncate(0)
+    nickname_file << new_file
     nickname_file.close()
     return "Nickname removed for #{card_name}, nickname is #{nickname}"
   end
@@ -92,3 +94,7 @@ class Commands
     event.respond "This command is unknown. Please see the README for command list with: ~README~"
   end
 end
+
+thing = Commands.new()
+
+thing.remove_card_nickname("~remove nickname:dig through time>>dig:~")
