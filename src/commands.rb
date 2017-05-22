@@ -9,15 +9,15 @@ class Commands
       shut_down_bot(event)
     elsif command == "readme"
       result = post_readme(event)
-    elsif command.match /^nickname:(.+)>>(.+):$/
+    elsif command.match /^nickname:(.+)>>(.+)$/
       result = create_card_nickname(command)
-    elsif command.match /^remove nickname:(.+)>>(.+):$/
+    elsif command.match /^remove nickname:(.+)>>(.+)$/
       result = remove_card_nickname(command)
     elsif command == "list nicknames"
       result = list_nicknames(event)
-    elsif command.match /^whatsthepick:...:$/
+    elsif command.match /^whatsthepick:...$/
       WhatIsThePick.new(event, command.split(":").last().split(":").first())
-    elsif command.match /^request:(.+):$/
+    elsif command.match /^request:(.+)$/
       result = feature_requests(command)
     else
       result = unknown_command(event)
@@ -79,7 +79,7 @@ class Commands
     nickname_file.each_line do |line|
       nicknames = nicknames << line
     end
-    return "Nickames:\n#{nicknames}"
+    return "Nicknames:\n#{nicknames}"
   end
 
   def add_feature_request(command)
