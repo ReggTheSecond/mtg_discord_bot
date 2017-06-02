@@ -4,21 +4,11 @@ require_relative 'commands.rb'
 require_relative 'searching_gatherer.rb'
 
 def prepare_card(card_name)
-  card_name = clean_name(card_name)
+  searcher =  = Card_Searcher.new()
+  card_name = searcher.clean_name(card_name)
   if is_a_nickname(card_name)
-    card_name = get_nickname(card_name)
+    card_name = searcher.get_nickname(card_name)
   end
-end
-
-
-def clean_name(card_name)
-  card_name = card_name.strip()
-  card_name = card_name.split("[[").last()
-  card_name = card_name.split("]]").first()
-  card_name = card_name.split("{{").last()
-  card_name = card_name.split("}}").first()
-  card_name = card_name.split(":").first()
-  card_name = card_name.downcase()
   return card_name
 end
 
