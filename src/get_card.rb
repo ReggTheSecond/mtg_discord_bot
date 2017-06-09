@@ -52,6 +52,7 @@ class Card_Searcher
   end
 
   def get_card_link(card_name)
+    puts card_name
     cards = get_cards(card_name)
     cards.each do |card|
       if card.name.downcase().strip() == card_name
@@ -60,6 +61,7 @@ class Card_Searcher
         end
       end
     end
+    puts cards.last().image_url
     return cards.last().image_url
   end
 
