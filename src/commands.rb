@@ -18,7 +18,7 @@ class Commands
     elsif command.match /^whatsthepick:...$/
       WhatIsThePick.new(event, command.split(":").last().split(":").first())
     elsif command.match /^request:(.+)$/
-      result = feature_requests(command)
+      result = add_feature_request(command)
     else
       result = unknown_command(event)
     end
