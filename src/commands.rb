@@ -125,7 +125,7 @@ class Commands
   def add_card_to_deck(command)
     card_name = command.split(":").last().strip()
     file = File.open("data/decklists/#{@current_list}.txt", "a+")
-    file << card_name
+    file << "#{card_name}\n"
     file.close()
     return nil
   end
