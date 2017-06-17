@@ -7,7 +7,7 @@ class Commands
     request = ""
     if command == "exit"
       shut_down_bot(event)
-    elsif command == "readme"
+    elsif command == "readme" || command == "help"
       result = post_readme(event)
     elsif command.match /^nickname:(.+)>>(.+)$/
       result = create_card_nickname(command)
