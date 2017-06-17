@@ -17,7 +17,7 @@ Usage from Discord:
 ~nickname:Dark Confidant>>Bob~ Creates a nickname for the card. Saves to the data directory. And afterward you can use the card name function to display using the nickname
 ~remove nickname:Dark Confidant>>Bob~ Removes a nickname for the card. Removes to the data directory.
 ~list nicknames~ Lists all nicknames for Magic Cards
-~README~ Posts the README to the Discord chat.
+~README~ or ~help~ Posts the README to the Discord chat.
 ~exit~ Will kill the ruby script running the Bot. Not case sensitive.
 
 Seaching Gatherer:
@@ -29,3 +29,11 @@ Subtype  - {sub:Goblin}
 Text - {{text:enters the battlefield}}
 One colour - {{colour:white}}
 More than on colour - {{colour:white,blue}}
+
+Creating Decklists:
+~newdeck:Deck Name~ or ~new deck:Deck Name~ Creates a new deck list file. And sets to that deck
+~set deck:Deck Name~ or setdeck:Deck Name~ Sets which deck list to add cards to.
+~which list~ or ~whichlist~ Returns which deck will deck cards are added to.
+~request list:Deck Name~ or ~requestlist:Deck Name~ PMs deck list.
+~card:Card Name~ Adds card to current list.
+~listdecks~  or ~list decks~ Returns all decks.
