@@ -1,6 +1,7 @@
 class SearchGatherer
   def search_for_card(name, type, subtype, text, colour, event)
-    results = cards_with(name, type, subtype, text, colour)
+    searcher = Card_Searcher.new()
+    results = searcher.cards_with(name, type, subtype, text, colour)
     results.each_line do |line|
       sleep 1
       event.send_temp(get_card_link(line), 60)
