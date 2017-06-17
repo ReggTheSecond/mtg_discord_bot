@@ -4,7 +4,7 @@ class SearchGatherer
     results = searcher.cards_with(name, type, subtype, text, colour)
     results.each_line do |line|
       sleep 1
-      event.send_temp(get_card_link(line), 60)
+      event.send_temp(searcher.get_card_link(line.strip), 60)
     end
   end
 
@@ -12,10 +12,8 @@ class SearchGatherer
     name = parse_card_name(event.content.to_s())
     type = parse_card_type(event.content.to_s())
     subtype = parse_card_subtype(event.content.to_s())
-    parse_card_type(event.content.to_s())
     text = parse_card_text(event.content.to_s())
     colour = parse_card_colour(event.content.to_s())
-
     search_for_card(name, type, subtype, text, colour, event)
   end
 
