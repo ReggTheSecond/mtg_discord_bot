@@ -29,6 +29,9 @@ Subtype  - {sub:Goblin}
 Text - {{text:enters the battlefield}}
 One colour - {{colour:white}}
 More than on colour - {{colour:white,blue}}
+Combining seach can also be done using &, you can use as many of the above fields as desired. The ordering of the fields is not important:
+Text and colour - {{text:enters the battlefield&colour:black}}
+Name and Type - {{name:Dragonlord &typecCreature}}
 
 Creating Decklists:
 ~newdeck:Deck Name~ or ~new deck:Deck Name~ Creates a new deck list file. And sets to that deck
