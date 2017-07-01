@@ -63,6 +63,18 @@ class Card_Searcher
     return cards.last().image_url
   end
 
+  def get_card_name(card_name)
+    cards = get_cards(card_name)
+    cards.each do |card|
+      if card.name.downcase().strip() == card_name
+        if card.image_url != nil && card.image_url != ""
+          return card.name
+        end
+      end
+    end
+    return cards.last().image_url
+  end
+
   def get_specific_set(card_name, set)
     card_name = clean_name(card_name)
     set = clean_name(set)
