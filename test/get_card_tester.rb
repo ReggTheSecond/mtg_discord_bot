@@ -12,6 +12,6 @@ class Card_Searcher_Tester < Test::Unit::TestCase
   end
 
   def test_get_nickname()
-    assert_equal("Dig Through TIme", Card_Searcher.new().get_nickname("Dig"))
+    assert_equal("dig Through time", Card_Searcher.new().get_nickname("Dig"))
   end
 end
