@@ -67,12 +67,12 @@ class Card_Searcher
     cards = get_cards(card_name)
     cards.each do |card|
       if card.name.downcase().strip() == card_name
-        if card.image_url != nil && card.image_url != ""
+        if card.name != nil && card.name != ""
           return card.name
         end
       end
     end
-    return cards.last().image_url
+    return cards.last().name
   end
 
   def get_specific_set(card_name, set)
