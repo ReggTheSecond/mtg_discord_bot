@@ -1,8 +1,15 @@
 require 'mtg_sdk'
 
 class Card_Searcher
-  def get_cards(card_name)
-    cards = MTG::Card.where(name: card_name).all
+  def get_cards(name, type, subtype, text, colour)
+    cards =  MTG::Card.where(name: name)
+                      .where(type: type)
+                      .where(subtypes: subtype)
+                      .where(text: text)
+                      .where(colors: colour)
+                      .where(page: 1).where(pageSize: 20)
+                      .all
+    return cards
   end
 
   def get_nickname_file()
@@ -42,8 +49,8 @@ class Card_Searcher
   end
 
   def get_split_card(card_name)
-    left = card_name.split("//").first()
-    left_cards = get_cards(left)
+    name = card_name.split("//").first()
+    left_cards = get_cards(name, type, subtype, text, colour)
     left_cards.each() do |left_card|
       if left_card.name.downcase().strip() == left
         return left_card.image_url
@@ -51,8 +58,8 @@ class Card_Searcher
     end
   end
 
-  def get_card_link(card_name)
-    cards = get_cards(card_name)
+  def get_card_link(name)
+    cards = get_cards(name, type, subtype, text, colour)
     cards.each do |card|
       if card.name.downcase().strip() == card_name
         if card.image_url != nil && card.image_url != ""
@@ -72,8 +79,8 @@ class Card_Searcher
     cards.last().image_url
   end
 
-  def get_card_sets(card_name)
-    cards = get_cards(card_name)
+  def get_card_sets(name)
+    cards = get_cards(name, type, subtype, text, colour)
     sets = ""
     cards.each do |card|
       sets = sets << card.set() << "\n"
@@ -83,13 +90,7 @@ class Card_Searcher
 
   def cards_with(name, type, subtype, text, colour)
     results = ""
-    cards =  MTG::Card.where(name: name)
-                      .where(type: type)
-                      .where(subtypes: subtype)
-                      .where(text: text)
-                      .where(colors: colour)
-                      .where(page: 1).where(pageSize: 20)
-                      .all
+    cards = get_cards(name, type, subtype, text, colour)
     cards.each() do |card|
       if !results.include?(card.name)
         results = results << "#{card.name}\n"
