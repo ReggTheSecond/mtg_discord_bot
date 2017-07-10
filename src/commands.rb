@@ -22,8 +22,6 @@ class Commands
       result = list_nicknames(event)
     elsif command.match(/^whatsthepick:...$/)
       WhatIsThePick.new(event, command.split(":").last().split(":").first())
-    elsif command.match(/^request:(.+)$/)
-      result = add_feature_request(command)
     elsif command.match(/^newdeck:(.+)$/) || command.match(/^new deck:(.+)$/)
       result = create_deck(event, command)
     elsif command.match(/^set deck:(.+)$/)  || command.match(/^setdeck:(.+)$/)
@@ -97,14 +95,6 @@ class Commands
       nicknames = nicknames << line
     end
     return "Nicknames:\n#{nicknames}"
-  end
-
-  def add_feature_request(command)
-    file = File.open("data/feature_requests.txt", "a+")
-    request = "#{DateTime.now().strftime("%d/%m/%y")}:Feature: #{command.split(":").last().split(":").first()}"
-    file << request
-    file.close()
-    return request
   end
 
   def create_deck(event, command)

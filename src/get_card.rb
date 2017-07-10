@@ -1,8 +1,15 @@
 require 'mtg_sdk'
 
 class Card_Searcher
-  def get_cards(card_name)
-    cards = MTG::Card.where(name: card_name).all
+  def get_cards(name, type, subtype, text, colour)
+    cards = MTG::Card.where(name: name)
+                      .where(type: type)
+                      .where(subtypes: subtype)
+                      .where(text: text)
+                      .where(colors: colour)
+                      .where(page: 1).where(pageSize: 20)
+                      .all
+    return cards
   end
 
   def get_nickname_file()
@@ -20,10 +27,10 @@ class Card_Searcher
     return card_name
   end
 
-  def is_a_nickname(card_name)
+  def is_a_nickname(name)
     file = get_nickname_file()
     file.each_line() do |line|
-      if line.split("~").last().strip() == card_name
+      if line.split("~").last().strip() == name
         return true
       end
     end
@@ -31,10 +38,10 @@ class Card_Searcher
     return false
   end
 
-  def get_nickname(card_name)
+  def get_nickname(name)
     file = get_nickname_file()
     file.each_line() do |line|
-      if line.split("~").last().strip() == card_name
+      if line.split("~").last().strip() == name
         return line.split("~").first
       end
     end
@@ -43,7 +50,7 @@ class Card_Searcher
 
   def get_split_card(card_name)
     left = card_name.split("//").first()
-    left_cards = get_cards(left)
+    left_cards = get_cards(left, "", "", "", "")
     left_cards.each() do |left_card|
       if left_card.name.downcase().strip() == left
         return left_card.image_url
@@ -51,10 +58,10 @@ class Card_Searcher
     end
   end
 
-  def get_card_link(card_name)
-    cards = get_cards(card_name)
+  def get_card_link(name)
+    cards = get_cards(name, "", "", "", "")
     cards.each do |card|
-      if card.name.downcase().strip() == card_name
+      if card.name.downcase().strip() == name
         if card.image_url != nil && card.image_url != ""
           return card.image_url
         end
@@ -63,17 +70,29 @@ class Card_Searcher
     return cards.last().image_url
   end
 
-  def get_specific_set(card_name, set)
-    card_name = clean_name(card_name)
+  def get_card_name(name)
+    cards = get_cards(name, "", "", "", "")
+    cards.each do |card|
+      if card.name.downcase().strip() == name
+        if card.name != nil && card.name != ""
+          return card.name
+        end
+      end
+    end
+    return cards.last().name
+  end
+
+  def get_specific_set(name, set)
+    name = clean_name(name)
     set = clean_name(set)
-    cards =  MTG::Card.where(name: card_name)
+    cards =  MTG::Card.where(name: name)
                       .where(set: set)
                       .all
     cards.last().image_url
   end
 
-  def get_card_sets(card_name)
-    cards = get_cards(card_name)
+  def get_card_sets(name)
+    cards = get_cards(name, "", "", "", "")
     sets = ""
     cards.each do |card|
       sets = sets << card.set() << "\n"
@@ -83,13 +102,7 @@ class Card_Searcher
 
   def cards_with(name, type, subtype, text, colour)
     results = ""
-    cards =  MTG::Card.where(name: name)
-                      .where(type: type)
-                      .where(subtypes: subtype)
-                      .where(text: text)
-                      .where(colors: colour)
-                      .where(page: 1).where(pageSize: 20)
-                      .all
+    cards = get_cards(name, type, subtype, text, colour)
     cards.each() do |card|
       if !results.include?(card.name)
         results = results << "#{card.name}\n"
