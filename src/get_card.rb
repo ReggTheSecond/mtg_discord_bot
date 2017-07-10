@@ -1,12 +1,13 @@
 require 'mtg_sdk'
 
 class Card_Searcher
-  def get_cards(name, type, subtype, text, colour)
+  def get_cards(name, type, subtype, text, colour, set)
     cards = MTG::Card.where(name: name)
                       .where(type: type)
                       .where(subtypes: subtype)
                       .where(text: text)
                       .where(colors: colour)
+                      .where(set: set)
                       .where(page: 1).where(pageSize: 20)
                       .all
     return cards
@@ -50,7 +51,7 @@ class Card_Searcher
 
   def get_split_card(card_name)
     left = card_name.split("//").first()
-    left_cards = get_cards(left, "", "", "", "")
+    left_cards = get_cards(left, "", "", "", "", "")
     left_cards.each() do |left_card|
       if left_card.name.downcase().strip() == left
         return left_card.image_url
@@ -59,7 +60,7 @@ class Card_Searcher
   end
 
   def get_card_link(name)
-    cards = get_cards(name, "", "", "", "")
+    cards = get_cards(name, "", "", "", "", "")
     cards.each do |card|
       if card.name.downcase().strip() == name
         if card.image_url != nil && card.image_url != ""
@@ -71,7 +72,7 @@ class Card_Searcher
   end
 
   def get_card_name(name)
-    cards = get_cards(name, "", "", "", "")
+    cards = get_cards(name, "", "", "", "", "")
     cards.each do |card|
       if card.name.downcase().strip() == name
         if card.name != nil && card.name != ""
@@ -85,14 +86,12 @@ class Card_Searcher
   def get_specific_set(name, set)
     name = clean_name(name)
     set = clean_name(set)
-    cards =  MTG::Card.where(name: name)
-                      .where(set: set)
-                      .all
+    cards = get_cards(name, "", "", "", "", set)
     cards.last().image_url
   end
 
   def get_card_sets(name)
-    cards = get_cards(name, "", "", "", "")
+    cards = get_cards(name, "", "", "", "", "")
     sets = ""
     cards.each do |card|
       sets = sets << card.set() << "\n"
@@ -100,9 +99,9 @@ class Card_Searcher
     return sets
   end
 
-  def cards_with(name, type, subtype, text, colour)
+  def cards_with(name, type, subtype, text, colour, set)
     results = ""
-    cards = get_cards(name, type, subtype, text, colour)
+    cards = get_cards(name, type, subtype, text, colour, set)
     cards.each() do |card|
       if !results.include?(card.name)
         results = results << "#{card.name}\n"
