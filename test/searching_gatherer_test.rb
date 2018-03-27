@@ -52,4 +52,11 @@ class SearchGathererTester < Test::Unit::TestCase
     assert_equal("blue", SearchGatherer.new().parse_card_colour("{{colour:blue&name:Dragon}}"))
     assert_equal("", SearchGatherer.new().parse_card_colour("{{ame:Dragon}}"))
   end
+
+  def test_parse_card_set()
+    assert_equal("ORI", SearchGatherer.new().parse_card_set("{{name:Dragon&type:creature&text:deathtouch&colour:blue&set:ORI}}"))
+    assert_equal("ORI", SearchGatherer.new().parse_card_set("{{set:ORI&type:creature&name:Dragon&text:deathtouch&colour:blue}}"))
+    assert_equal("ORI", SearchGatherer.new().parse_card_set("{{colour:blue&set:ORI&name:Dragon}}"))
+    assert_equal("", SearchGatherer.new().parse_card_set("{{se:ORI}}"))
+  end
 end

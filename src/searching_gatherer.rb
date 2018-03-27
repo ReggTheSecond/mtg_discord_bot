@@ -1,7 +1,7 @@
 class SearchGatherer
-  def search_for_card(name, type, subtype, text, colour, event)
+  def search_for_card(name, type, subtype, text, colour, set, event)
     searcher = Card_Searcher.new()
-    results = searcher.cards_with(name, type, subtype, text, colour)
+    results = searcher.cards_with(name, type, subtype, text, colour, set)
     results.each_line do |line|
       sleep 1
       event.send_temp(searcher.get_card_link(line.strip), 60)
@@ -14,7 +14,8 @@ class SearchGatherer
     subtype = parse_card_subtype(event.content.to_s())
     text = parse_card_text(event.content.to_s())
     colour = parse_card_colour(event.content.to_s())
-    search_for_card(name, type, subtype, text, colour, event)
+    set = parse_card_set(event.content.to_s())
+    search_for_card(name, type, subtype, text, colour, set, event)
   end
 
   def parse_card_name(to_parse)
@@ -60,5 +61,14 @@ class SearchGatherer
       colour = ""
     end
     return colour
+  end
+
+  def parse_card_set(to_parse)
+    if to_parse.include?("set:")
+      set = to_parse.split("}}").first.split("set:").last().split("&").first()
+    else
+      set = ""
+    end
+    return set
   end
 end
